@@ -6,12 +6,7 @@ type Order {
   id: ID!
   menuItems: [MenuItem!]!
   total: Int!
-  orderStatus: OrderStatus!
-}
-
-type OrderStatus {
-  id: ID!
-  name: String!
+  orderStatus: String!
 }
 
 extend type MenuItem @key(fields: "id") {

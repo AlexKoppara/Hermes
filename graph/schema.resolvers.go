@@ -13,7 +13,9 @@ import (
 
 func (r *queryResolver) Orders(ctx context.Context) ([]*model.Order, error) {
 	var menuItems []*model.MenuItem
-	menuItems
+	menuItems = append(menuItems, &model.MenuItem{
+		
+	})
 
 	var orders []*model.Order
 	orders = append(orders, &model.Order{

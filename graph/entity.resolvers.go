@@ -12,7 +12,7 @@ import (
 
 func (r *entityResolver) FindMenuItemByID(ctx context.Context, id string) (*model.MenuItem, error) {
 	menuItem := &model.MenuItem{
-		ID:           "menu_item_1",
+		ID:           "menu_item_" + id,
 		Name:         "chicken wings",
 		PriceInCents: 1500,
 	}
