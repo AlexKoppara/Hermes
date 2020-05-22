@@ -11,10 +11,20 @@ import (
 )
 
 func (r *entityResolver) FindMenuItemByID(ctx context.Context, id string) (*model.MenuItem, error) {
-	menuItem := &model.MenuItem{
-		ID:           "menu_item_" + id,
-		Name:         "chicken wings",
-		PriceInCents: 1500,
+	var menuItem *model.MenuItem
+	switch id {
+	case "menu_item_1":
+		menuItem = &model.MenuItem{
+			ID: "menu_item_1",
+		}
+	case "menu_item_2":
+		menuItem = &model.MenuItem{
+			ID: "menu_item_2",
+		}
+	case "menu_item_3":
+		menuItem = &model.MenuItem{
+			ID: "menu_item_3",
+		}
 	}
 	return menuItem, nil
 }

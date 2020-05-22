@@ -3,21 +3,14 @@
 package model
 
 type MenuItem struct {
-	ID           string `json:"id"`
-	Name         string `json:"name"`
-	PriceInCents int    `json:"priceInCents"`
+	ID string `json:"id"`
 }
 
 func (MenuItem) IsEntity() {}
 
 type Order struct {
-	ID          string       `json:"id"`
-	MenuItems   []*MenuItem  `json:"menuItems"`
-	Total       int          `json:"total"`
-	OrderStatus *OrderStatus `json:"orderStatus"`
-}
-
-type OrderStatus struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID          string      `json:"id"`
+	MenuItems   []*MenuItem `json:"menuItems"`
+	Total       int         `json:"total"`
+	OrderStatus string      `json:"orderStatus"`
 }

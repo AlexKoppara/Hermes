@@ -11,8 +11,6 @@ type Order {
 
 extend type MenuItem @key(fields: "id") {
   id: ID! @external
-  name: String! @external
-  priceInCents: Int! @external
 }
 
 extend type Query {

@@ -50,9 +50,7 @@ type ComplexityRoot struct {
 	}
 
 	MenuItem struct {
-		ID           func(childComplexity int) int
-		Name         func(childComplexity int) int
-		PriceInCents func(childComplexity int) int
+		ID func(childComplexity int) int
 	}
 
 	Order struct {
@@ -60,11 +58,6 @@ type ComplexityRoot struct {
 		MenuItems   func(childComplexity int) int
 		OrderStatus func(childComplexity int) int
 		Total       func(childComplexity int) int
-	}
-
-	OrderStatus struct {
-		ID   func(childComplexity int) int
-		Name func(childComplexity int) int
 	}
 
 	Query struct {
@@ -119,20 +112,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.MenuItem.ID(childComplexity), true
 
-	case "MenuItem.name":
-		if e.complexity.MenuItem.Name == nil {
-			break
-		}
-
-		return e.complexity.MenuItem.Name(childComplexity), true
-
-	case "MenuItem.priceInCents":
-		if e.complexity.MenuItem.PriceInCents == nil {
-			break
-		}
-
-		return e.complexity.MenuItem.PriceInCents(childComplexity), true
-
 	case "Order.id":
 		if e.complexity.Order.ID == nil {
 			break
@@ -160,20 +139,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Order.Total(childComplexity), true
-
-	case "OrderStatus.id":
-		if e.complexity.OrderStatus.ID == nil {
-			break
-		}
-
-		return e.complexity.OrderStatus.ID(childComplexity), true
-
-	case "OrderStatus.name":
-		if e.complexity.OrderStatus.Name == nil {
-			break
-		}
-
-		return e.complexity.OrderStatus.Name(childComplexity), true
 
 	case "Query.orders":
 		if e.complexity.Query.Orders == nil {
@@ -266,18 +231,13 @@ type Order {
   id: ID!
   menuItems: [MenuItem!]!
   total: Int!
-  orderStatus: OrderStatus!
-}
-
-type OrderStatus {
-  id: ID!
-  name: String!
+  orderStatus: String!
 }
 
 extend type MenuItem @key(fields: "id") {
   id: ID! @external
-  name: String! @external
-  priceInCents: Int! @external
+  # name: String! @external
+  # priceInCents: Int! @external
 }
 
 extend type Query {
@@ -498,74 +458,6 @@ func (ec *executionContext) _MenuItem_id(ctx context.Context, field graphql.Coll
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _MenuItem_name(ctx context.Context, field graphql.CollectedField, obj *model.MenuItem) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "MenuItem",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _MenuItem_priceInCents(ctx context.Context, field graphql.CollectedField, obj *model.MenuItem) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "MenuItem",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.PriceInCents, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Order_id(ctx context.Context, field graphql.CollectedField, obj *model.Order) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -686,74 +578,6 @@ func (ec *executionContext) _Order_orderStatus(ctx context.Context, field graphq
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.OrderStatus, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.OrderStatus)
-	fc.Result = res
-	return ec.marshalNOrderStatus2ᚖgithubᚗcomᚋAlexKopparaᚋHermesᚋgraphᚋmodelᚐOrderStatus(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _OrderStatus_id(ctx context.Context, field graphql.CollectedField, obj *model.OrderStatus) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "OrderStatus",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _OrderStatus_name(ctx context.Context, field graphql.CollectedField, obj *model.OrderStatus) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "OrderStatus",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2114,16 +1938,6 @@ func (ec *executionContext) _MenuItem(ctx context.Context, sel ast.SelectionSet,
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "name":
-			out.Values[i] = ec._MenuItem_name(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "priceInCents":
-			out.Values[i] = ec._MenuItem_priceInCents(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2163,38 +1977,6 @@ func (ec *executionContext) _Order(ctx context.Context, sel ast.SelectionSet, ob
 			}
 		case "orderStatus":
 			out.Values[i] = ec._Order_orderStatus(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalids > 0 {
-		return graphql.Null
-	}
-	return out
-}
-
-var orderStatusImplementors = []string{"OrderStatus"}
-
-func (ec *executionContext) _OrderStatus(ctx context.Context, sel ast.SelectionSet, obj *model.OrderStatus) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, orderStatusImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	var invalids uint32
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("OrderStatus")
-		case "id":
-			out.Values[i] = ec._OrderStatus_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "name":
-			out.Values[i] = ec._OrderStatus_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2692,20 +2474,6 @@ func (ec *executionContext) marshalNOrder2ᚖgithubᚗcomᚋAlexKopparaᚋHermes
 		return graphql.Null
 	}
 	return ec._Order(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNOrderStatus2githubᚗcomᚋAlexKopparaᚋHermesᚋgraphᚋmodelᚐOrderStatus(ctx context.Context, sel ast.SelectionSet, v model.OrderStatus) graphql.Marshaler {
-	return ec._OrderStatus(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNOrderStatus2ᚖgithubᚗcomᚋAlexKopparaᚋHermesᚋgraphᚋmodelᚐOrderStatus(ctx context.Context, sel ast.SelectionSet, v *model.OrderStatus) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._OrderStatus(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
